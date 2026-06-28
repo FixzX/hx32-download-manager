@@ -42,12 +42,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload exe to release
-        uses: softprops/action-upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.ensure_release.outputs.upload_url || '' }}
-          asset_path: dist/hx32-download-manager.exe
-          asset_name: hx32-download-manager_3.0.0_windows_x86_64.exe
-          asset_content_type: application/octet-stream
+        run: |
+          TAG=${{ github.event.inputs.tag }}
+          gh release upload "$TAG" dist/hx32-download-manager.exe --repo ${{ github.repository }} --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,11 +57,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y python3 python3-gi python3-gi-cairo gir1.2-gtk-4.0
           dpkg-deb --build debian hx32-download-manager_3.0.0_amd64.deb
       - name: Upload deb to release
-        uses: softprops/action-upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: hx32-download-manager_3.0.0_amd64.deb
-          asset_name: hx32-download-manager_3.0.0_amd64.deb
-          asset_content_type: application/vnd.debian.binary-package
+        run: |
+          gh release upload v3.0.0 hx32-download-manager_3.0.0_amd64.deb --repo ${{ github.repository }} --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
