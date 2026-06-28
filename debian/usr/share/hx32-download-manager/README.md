@@ -1,4 +1,5 @@
 # hx32 download manager
+# Last updated: 2026-06-28 — v2.0.0-alpha
 
 hx32 download manager is a linux-only gtk4 app written in python.
 

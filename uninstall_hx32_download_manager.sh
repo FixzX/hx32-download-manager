@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Last updated: 2026-06-28 — v2.0.0-alpha
 set -euo pipefail
 
 # Uninstaller for HX32 Download Manager

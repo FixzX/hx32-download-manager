@@ -1,0 +1,9 @@
+[Desktop Entry]
+# Last updated: 2026-06-28 — v2.0.0-alpha
+Type=Application
+Name=HX32 Download Manager
+Comment=Download manager for Linux with GTK4 interface
+Exec=/usr/local/bin/hx32-download-manager
+Icon=utilities-terminal
+Terminal=false
+Categories=Network;Utility;
