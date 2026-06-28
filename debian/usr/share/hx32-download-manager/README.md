@@ -1,5 +1,5 @@
 # hx32 download manager
-# Last updated: 2026-06-28 — v2.0.0-alpha
+# Last updated: 2026-06-28 — v3.0.0
 
 hx32 download manager is a linux-only gtk4 app written in python.
 
@@ -25,7 +25,7 @@ python3 hx32_download_manager.py
 3. or install the Debian package once built:
 
 ```bash
-sudo dpkg -i hx32-download-manager_2.0.0~alpha_amd64.deb
+sudo dpkg -i hx32-download-manager_3.0.0_amd64.deb
 ```
 
 4. if an older version is installed, uninstall it first:
