@@ -28,7 +28,7 @@ class HX32DownloadManager(Gtk.Application):
         super().__init__(application_id='com.hx32.downloadmanager')
         self.tasks = []
         self.next_id = 1
-        self.download_dir = os.path.expanduser('~/Téléchargements')
+        self.download_dir = os.path.expanduser('~/Downloads')
         self.theme_name = 'theme-violet'
         self.connect('activate', self.on_activate)
 
@@ -57,7 +57,7 @@ class HX32DownloadManager(Gtk.Application):
         title_widget.add_css_class('title-label')
         title_widget.set_xalign(0)
 
-        subtitle_widget = Gtk.Label(label='Gestionnaire de téléchargements moderne')
+        subtitle_widget = Gtk.Label(label='a modern download manager')
         subtitle_widget.add_css_class('subtitle-label')
         subtitle_widget.set_xalign(0)
 
@@ -68,12 +68,12 @@ class HX32DownloadManager(Gtk.Application):
 
         page_downloads = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
 
-        title_label = Gtk.Label(label='HX32 : Téléchargez mieux')
+        title_label = Gtk.Label(label='HX32: download better')
         title_label.add_css_class('title-label')
         title_label.set_xalign(0)
         title_label.set_wrap(True)
 
-        subtitle_label = Gtk.Label(label='Ajoutez une URL, lancez le téléchargement et suivez l’avancement en temps réel.')
+        subtitle_label = Gtk.Label(label='add a url, start downloading and track progress live.')
         subtitle_label.add_css_class('subtitle-label')
         subtitle_label.set_xalign(0)
         subtitle_label.set_wrap(True)
@@ -82,12 +82,12 @@ class HX32DownloadManager(Gtk.Application):
         action_row.set_halign(Gtk.Align.FILL)
 
         self.url_entry = Gtk.Entry()
-        self.url_entry.set_placeholder_text("Entrez l'URL du fichier à télécharger")
+        self.url_entry.set_placeholder_text('enter the download url')
         self.url_entry.add_css_class('entry-field')
         self.url_entry.set_hexpand(True)
         self.url_entry.connect('activate', self.on_add_download)
 
-        add_button = Gtk.Button(label='+ Nouveau téléchargement')
+        add_button = Gtk.Button(label='+ new download')
         add_button.add_css_class('primary-button')
         add_button.connect('clicked', self.on_add_download)
 
@@ -129,9 +129,9 @@ class HX32DownloadManager(Gtk.Application):
 
         notebook = Gtk.Notebook()
         notebook.add_css_class('main-tabs')
-        notebook.append_page(page_downloads, Gtk.Label(label='Téléchargements'))
-        notebook.append_page(page_theme, Gtk.Label(label='Thèmes'))
-        notebook.append_page(page_settings, Gtk.Label(label='Paramètres'))
+        notebook.append_page(page_downloads, Gtk.Label(label='Downloads'))
+        notebook.append_page(page_theme, Gtk.Label(label='Themes'))
+        notebook.append_page(page_settings, Gtk.Label(label='Settings'))
 
         self.window.set_child(notebook)
         self.window.present()
@@ -142,20 +142,20 @@ class HX32DownloadManager(Gtk.Application):
         details.set_hexpand(True)
         details.set_vexpand(True)
 
-        details_title = Gtk.Label(label='Détails du téléchargement')
+        details_title = Gtk.Label(label='download details')
         details_title.add_css_class('details-title')
         details_title.set_xalign(0)
 
-        description = Gtk.Label(label='Sélectionnez une tâche dans la liste pour afficher le chemin, l’état et la progression.')
+        description = Gtk.Label(label='select a task to view the path, status, and progress.')
         description.add_css_class('details-text')
         description.set_wrap(True)
         description.set_xalign(0)
 
-        self.details_status = Gtk.Label(label='Statut : —')
+        self.details_status = Gtk.Label(label='status: —')
         self.details_status.add_css_class('details-text')
         self.details_status.set_xalign(0)
 
-        self.details_url = Gtk.Label(label='URL : —')
+        self.details_url = Gtk.Label(label='URL: —')
         self.details_url.add_css_class('details-text')
         self.details_url.set_wrap(True)
         self.details_url.set_xalign(0)
@@ -164,7 +164,7 @@ class HX32DownloadManager(Gtk.Application):
         self.details_progress.add_css_class('details-progress')
         self.details_progress.set_hexpand(True)
 
-        self.details_dir = Gtk.Label(label=f'Chemin : {self.download_dir}')
+        self.details_dir = Gtk.Label(label=f'Path: {self.download_dir}')
         self.details_dir.add_css_class('details-text')
         self.details_dir.set_wrap(True)
         self.details_dir.set_xalign(0)
@@ -195,7 +195,7 @@ class HX32DownloadManager(Gtk.Application):
         progress_bar = Gtk.ProgressBar()
         progress_bar.add_css_class('download-progress')
 
-        status_label = Gtk.Label(label='Préparation...')
+        status_label = Gtk.Label(label='Preparing...')
         status_label.add_css_class('status-label')
         status_label.set_xalign(0)
 
@@ -220,8 +220,8 @@ class HX32DownloadManager(Gtk.Application):
         for task in self.tasks:
             if task.id == task_id and not task.completed:
                 task.canceled = True
-                task.status_label.set_text('Annulé')
-                task.action_button.set_label('Annulé')
+                task.status_label.set_text('Canceled')
+                task.action_button.set_label('Canceled')
                 task.action_button.set_sensitive(False)
                 break
 
@@ -263,10 +263,10 @@ class HX32DownloadManager(Gtk.Application):
                         written += len(chunk)
                         if total_bytes:
                             fraction = min(1.0, written / total_bytes)
-                            status_text = f'En cours — {int(fraction * 100)}%'
+                            status_text = f'Downloading — {int(fraction * 100)}%'
                         else:
                             fraction = 0.0
-                            status_text = f'En cours — {written // 1024} KiB'
+                            status_text = f'Downloading — {written // 1024} KiB'
                         GLib.idle_add(self.update_download, task.id, fraction, status_text)
                 if task.canceled:
                     try:
@@ -275,13 +275,13 @@ class HX32DownloadManager(Gtk.Application):
                         pass
                     return
                 os.replace(temp_path, task.save_path)
-                GLib.idle_add(self.update_download, task.id, 1.0, 'Téléchargement terminé')
+                GLib.idle_add(self.update_download, task.id, 1.0, 'Download complete')
         except urllib.error.HTTPError as err:
-            GLib.idle_add(self.update_download, task.id, task.progress, f'Erreur HTTP {err.code}')
+            GLib.idle_add(self.update_download, task.id, task.progress, f'HTTP error {err.code}')
         except urllib.error.URLError as err:
-            GLib.idle_add(self.update_download, task.id, task.progress, 'URL invalide ou réseau')
+            GLib.idle_add(self.update_download, task.id, task.progress, 'invalid url or network error')
         except Exception:
-            GLib.idle_add(self.update_download, task.id, task.progress, 'Erreur de téléchargement')
+            GLib.idle_add(self.update_download, task.id, task.progress, 'download error')
 
     def on_row_selected(self, listbox, row):
         if row is None:
@@ -289,10 +289,10 @@ class HX32DownloadManager(Gtk.Application):
         task_id = getattr(row, 'download_id', None)
         for task in self.tasks:
             if task.id == task_id:
-                status_label = 'Annulé' if task.canceled else 'Terminé' if task.completed else 'En cours'
-                self.details_status.set_text(f'Statut : {status_label}')
-                self.details_url.set_text(f'URL : {task.url}')
-                self.details_dir.set_text(f'Chemin : {task.save_path}')
+                status_label = 'Canceled' if task.canceled else 'Complete' if task.completed else 'Downloading'
+                self.details_status.set_text(f'Status: {status_label}')
+                self.details_url.set_text(f'URL: {task.url}')
+                self.details_dir.set_text(f'Path: {task.save_path}')
                 self.details_progress.set_fraction(task.progress)
                 break
 
@@ -325,7 +325,7 @@ class HX32DownloadManager(Gtk.Application):
 
     def save_task_file(self, task):
         try:
-            content = f"Fichier {task.file_name} téléchargé depuis {task.url}\n"
+            content = f"File {task.file_name} downloaded from {task.url}\n"
             Path(task.save_path).write_text(content, encoding='utf-8')
         except Exception:
             pass
@@ -344,11 +344,11 @@ class HX32DownloadManager(Gtk.Application):
         page.set_margin_start(18)
         page.set_margin_bottom(18)
 
-        title = Gtk.Label(label='Sélectionnez un thème')
+        title = Gtk.Label(label='select a theme')
         title.add_css_class('details-title')
         title.set_xalign(0)
 
-        subtitle = Gtk.Label(label='Personnalisez le style de votre gestionnaire avec un thème sombre moderne.')
+        subtitle = Gtk.Label(label='customize your manager with a dark theme.')
         subtitle.add_css_class('details-text')
         subtitle.set_wrap(True)
         subtitle.set_xalign(0)
@@ -378,11 +378,11 @@ class HX32DownloadManager(Gtk.Application):
         page.set_margin_start(18)
         page.set_margin_bottom(18)
 
-        title = Gtk.Label(label='Paramètres de téléchargement')
+        title = Gtk.Label(label='download settings')
         title.add_css_class('details-title')
         title.set_xalign(0)
 
-        subtitle = Gtk.Label(label='Choisissez le dossier de destination et activez les options.')
+        subtitle = Gtk.Label(label='choose the destination folder and enable options.')
         subtitle.add_css_class('details-text')
         subtitle.set_wrap(True)
         subtitle.set_xalign(0)
@@ -392,7 +392,7 @@ class HX32DownloadManager(Gtk.Application):
         self.dir_entry.add_css_class('entry-field')
         self.dir_entry.set_hexpand(True)
 
-        save_dir_button = Gtk.Button(label='Enregistrer dossier')
+        save_dir_button = Gtk.Button(label='save folder')
         save_dir_button.add_css_class('primary-button')
         save_dir_button.connect('clicked', self.on_save_directory)
 
@@ -402,7 +402,7 @@ class HX32DownloadManager(Gtk.Application):
         self.notify_switch = Gtk.Switch()
         self.notify_switch.set_active(True)
         self.notify_switch.add_css_class('secondary-button')
-        notify_label = Gtk.Label(label='Notifications actives')
+        notify_label = Gtk.Label(label='notifications enabled')
         notify_label.add_css_class('details-text')
         notify_label.set_xalign(0)
 
@@ -434,7 +434,7 @@ class HX32DownloadManager(Gtk.Application):
             expanded = os.path.expanduser(path)
             os.makedirs(expanded, exist_ok=True)
             self.download_dir = expanded
-            self.details_dir.set_text(f'Chemin : {self.download_dir}')
+            self.details_dir.set_text(f'Path: {self.download_dir}')
 
 
 if __name__ == '__main__':

@@ -17,14 +17,26 @@ sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-4.0
 2. run the app from the project folder:
 
 ```bash
-cd ~/Téléchargements/Project
+cd path/to/project
 python3 hx32_download_manager.py
 ```
+
+3. or install the Debian package once built or downloaded:
+
+```bash
+sudo dpkg -i hx32-download-manager_1.0.0~alpha_amd64.deb
+```
+
+## release
+
+- version: 1.0.0 alpha
+- package: `hx32-download-manager_1.0.0~alpha_amd64.deb`
+- install the release package from the project root
 
 ## usage
 
 - enter a file url in the input field
-- click `+ nouveau téléchargement`
+- click `+ new download`
 - select a download task to view details
 - use the themes tab to change the app style
 - use the settings tab to change the save folder
@@ -42,4 +54,5 @@ python3 hx32_download_manager.py
 
 - linux only
 - works with `python3`
-- files are saved under `~/Téléchargements` by default
+- files are saved under `~/Downloads` by default
+- this repository includes the 1.0.0 alpha Debian package
