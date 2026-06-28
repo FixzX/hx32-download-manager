@@ -1,0 +1,310 @@
+window, headerbar, button, entry, progressbar, label, listbox, listboxrow, box, scrolledwindow {
+    color: #d9ccff;
+}
+
+window {
+    background: #05040d;
+}
+
+headerbar {
+    background-color: transparent;
+    border: none;
+}
+
+.headerbar {
+    background-color: transparent;
+}
+
+.top-toolbar {
+    background: linear-gradient(180deg, rgba(34, 16, 63, 0.92), rgba(17, 10, 33, 0.95));
+    border: 1px solid rgba(120, 96, 255, 0.22);
+    border-radius: 28px;
+    padding: 24px;
+    box-shadow: 0 24px 80px rgba(16, 8, 39, 0.30);
+}
+
+.title-label {
+    font-size: 26px;
+    font-weight: 800;
+    color: #c0b7ff;
+}
+
+.subtitle-label {
+    color: #9d8cff;
+    font-size: 15px;
+    margin-top: 6px;
+}
+
+.entry-field {
+    background-color: rgba(22, 9, 44, 0.94);
+    border-radius: 20px;
+    border: 1px solid rgba(128, 93, 255, 0.58);
+    padding: 16px 18px;
+    color: #e8dcff;
+}
+
+.entry-field:selected,
+.entry-field:focus {
+    border-color: #a286ff;
+    background-color: rgba(42, 22, 82, 0.98);
+}
+
+.primary-button {
+    background-color: #7a68ff;
+    color: #f4e9ff;
+    border-radius: 22px;
+    padding: 16px 24px;
+    min-width: 180px;
+}
+
+.primary-button:hover {
+    background-color: #8f7cff;
+}
+
+.secondary-button {
+    background-color: rgba(81, 49, 255, 0.12);
+    color: #d3c9ff;
+    border-radius: 20px;
+    padding: 12px 18px;
+}
+
+.secondary-button:hover {
+    background-color: rgba(98, 60, 255, 0.20);
+}
+
+.download-list {
+    background-color: rgba(14, 15, 25, 0.95);
+    border: 1px solid rgba(96, 67, 255, 0.16);
+    border-radius: 30px;
+    padding: 20px;
+    min-width: 520px;
+}
+
+.download-row {
+    background: linear-gradient(180deg, rgba(26, 14, 63, 0.96), rgba(17, 11, 33, 0.98));
+    border: 1px solid rgba(113, 74, 255, 0.18);
+    border-radius: 26px;
+    padding: 18px;
+    margin-bottom: 14px;
+    transition: transform 150ms ease, background-color 150ms ease;
+}
+
+.download-row:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(180deg, rgba(41, 21, 93, 0.96), rgba(20, 11, 43, 0.98));
+}
+
+.download-row:selected {
+    background-color: rgba(115, 82, 255, 0.24);
+}
+
+.download-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #ebdcff;
+}
+
+.download-progress {
+    min-height: 16px;
+    border-radius: 14px;
+    background-color: rgba(96, 52, 255, 0.12);
+}
+
+.progressbar trough {
+    border-radius: 14px;
+    background-color: rgba(105, 80, 255, 0.08);
+}
+
+.progressbar progress {
+    background-color: #b18bff;
+}
+
+.status-label {
+    color: #c5a8ff;
+    font-size: 13px;
+}
+
+.details-card {
+    background: rgba(14, 9, 40, 0.96);
+    border: 1px solid rgba(140, 107, 255, 0.24);
+    border-radius: 32px;
+    padding: 28px;
+    min-width: 360px;
+    box-shadow: inset 0 0 0 1px rgba(120, 85, 255, 0.12);
+}
+
+.details-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: #b8a8ff;
+}
+
+.details-text {
+    font-size: 14px;
+    color: #b5a0ff;
+    margin-top: 10px;
+}
+
+.details-progress {
+    min-height: 14px;
+    border-radius: 12px;
+    background-color: rgba(95, 63, 255, 0.16);
+    margin-top: 20px;
+}
+
+button,
+entry {
+    font-size: 14px;
+}
+
+.main-tabs notebook tab {
+    background-color: rgba(120, 80, 255, 0.12);
+    border-radius: 16px 16px 0 0;
+    padding: 10px 16px;
+    color: #dbc6ff;
+}
+
+.main-tabs notebook tab:hover {
+    background-color: rgba(130, 95, 255, 0.16);
+}
+
+.main-tabs notebook tab:checked {
+    background-color: rgba(140, 100, 255, 0.28);
+    color: #f0e8ff;
+}
+
+.theme-violet window {
+    background: #07080d;
+}
+
+.theme-violet .top-toolbar {
+    background: linear-gradient(180deg, rgba(34, 16, 63, 0.94), rgba(17, 10, 33, 0.96));
+    border-color: rgba(120, 96, 255, 0.28);
+}
+
+.theme-violet .download-list {
+    background-color: rgba(14, 15, 25, 0.96);
+    border-color: rgba(96, 67, 255, 0.22);
+}
+
+.theme-violet .download-row {
+    background: linear-gradient(180deg, rgba(28, 17, 69, 0.96), rgba(18, 10, 40, 0.98));
+    border-color: rgba(110, 88, 255, 0.22);
+}
+
+.theme-violet .download-row:hover {
+    background: linear-gradient(180deg, rgba(40, 25, 105, 0.96), rgba(23, 13, 51, 0.98));
+}
+
+.theme-violet .details-card {
+    border-color: rgba(138, 103, 255, 0.20);
+}
+
+.theme-violet .progressbar progress {
+    background-color: #b18bff;
+}
+
+.theme-violet .title-label,
+.theme-violet .download-name {
+    color: #c0b7ff;
+}
+
+.theme-violet .subtitle-label,
+.theme-violet .details-text,
+.theme-violet .status-label {
+    color: #a99fff;
+}
+
+.theme-graphite window {
+    background: #0d1119;
+}
+
+.theme-graphite .top-toolbar {
+    background: linear-gradient(180deg, rgba(28, 28, 36, 0.92), rgba(9, 10, 18, 0.95));
+    border-color: rgba(140, 140, 180, 0.20);
+}
+
+.theme-graphite .download-list {
+    background-color: rgba(18, 20, 28, 0.96);
+    border-color: rgba(140, 140, 180, 0.20);
+}
+
+.theme-graphite .download-row {
+    background: linear-gradient(180deg, rgba(24, 25, 35, 0.96), rgba(14, 15, 22, 0.98));
+    border-color: rgba(120, 120, 160, 0.20);
+}
+
+.theme-graphite .download-row:hover {
+    background: linear-gradient(180deg, rgba(38, 38, 53, 0.96), rgba(18, 18, 28, 0.98));
+}
+
+.theme-graphite .details-card {
+    border-color: rgba(160, 160, 190, 0.18);
+}
+
+.theme-graphite .progressbar progress {
+    background-color: #7d8cff;
+}
+
+.theme-graphite .title-label,
+.theme-graphite .download-name {
+    color: #c7c9e5;
+}
+
+.theme-graphite .subtitle-label,
+.theme-graphite .details-text,
+.theme-graphite .status-label {
+    color: #99a1c8;
+}
+
+.theme-neon window {
+    background: #06040f;
+}
+
+.theme-neon .top-toolbar {
+    background: linear-gradient(180deg, rgba(8, 4, 35, 0.96), rgba(3, 2, 14, 0.96));
+    border-color: rgba(0, 255, 218, 0.24);
+}
+
+.theme-neon .download-list {
+    background-color: rgba(4, 8, 20, 0.96);
+    border-color: rgba(0, 255, 194, 0.18);
+}
+
+.theme-neon .download-row {
+    background: linear-gradient(180deg, rgba(8, 6, 40, 0.96), rgba(3, 2, 18, 0.98));
+    border-color: rgba(0, 255, 187, 0.18);
+}
+
+.theme-neon .download-row:hover {
+    background: linear-gradient(180deg, rgba(15, 12, 55, 0.96), rgba(4, 3, 21, 0.98));
+}
+
+.theme-neon .details-card {
+    border-color: rgba(0, 255, 207, 0.18);
+}
+
+.theme-neon .primary-button {
+    background-color: #00ffd8;
+    color: #090b14;
+}
+
+.theme-neon .secondary-button {
+    background-color: rgba(0, 255, 180, 0.14);
+    color: #bdf9ef;
+}
+
+.theme-neon .progressbar progress {
+    background-color: #26ffdc;
+}
+
+.theme-neon .title-label,
+.theme-neon .download-name {
+    color: #b1fff3;
+}
+
+.theme-neon .subtitle-label,
+.theme-neon .details-text,
+.theme-neon .status-label {
+    color: #7ef3d9;
+}
