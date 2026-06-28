@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - 'v3.0.0'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build and release'
+        required: true
+        default: 'v3.0.0'
 
 jobs:
   build-windows:
@@ -21,21 +27,24 @@ jobs:
       - name: Build executable
         run: |
           pyinstaller --onefile --name hx32-download-manager hx32_download_manager.py
-      - name: Create GitHub Release
+      - name: Create or update GitHub Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/turnstyle@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: 'HX32 Download Manager 3.0.0'
-          body: 'Release v3.0.0 — Windows executable and Debian package (if present).'
-          draft: false
-          prerelease: false
+          tag: ${{ github.event.inputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Ensure release exists
+        id: ensure_release
+        run: |
+          TAG=${{ github.event.inputs.tag }}
+          gh release view "$TAG" || gh release create "$TAG" --title "HX32 Download Manager $TAG" --notes "Release $TAG — Windows executable and Debian package (if present)."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload exe to release
         uses: softprops/action-upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.ensure_release.outputs.upload_url || '' }}
           asset_path: dist/hx32-download-manager.exe
           asset_name: hx32-download-manager_3.0.0_windows_x86_64.exe
           asset_content_type: application/octet-stream
