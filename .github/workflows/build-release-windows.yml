@@ -1,5 +1,8 @@
 name: Build Windows executable and release
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
@@ -39,12 +42,14 @@ jobs:
         run: |
           TAG=${{ github.event.inputs.tag }}
           gh release view "$TAG" || gh release create "$TAG" --title "HX32 Download Manager $TAG" --notes "Release $TAG — Windows executable and Debian package (if present)."
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload exe to release
         run: |
           TAG=${{ github.event.inputs.tag }}
           gh release upload "$TAG" dist/hx32-download-manager.exe --repo ${{ github.repository }} --clobber
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -59,5 +64,6 @@ jobs:
       - name: Upload deb to release
         run: |
           gh release upload v3.0.0 hx32-download-manager_3.0.0_amd64.deb --repo ${{ github.repository }} --clobber
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
