@@ -21,24 +21,17 @@ cd path/to/project
 python3 hx32_download_manager.py
 ```
 
-3. or install the Debian package once built or downloaded:
+3. or install the Debian package once built:
 
 ```bash
 sudo dpkg -i hx32-download-manager_2.0.0~alpha_amd64.deb
 ```
 
-4. if an older version is installed, run the uninstaller before updating:
+4. if an older version is installed, uninstall it first:
 
 ```bash
-sudo ./uninstall_hx32_download_manager.sh
+sudo /usr/local/bin/hx32-download-manager-uninstall
 ```
-
-## release
-
-- version: 2.0.0 alpha
-- package: `hx32-download-manager_2.0.0~alpha_amd64.deb`
-- this release adds smoother rounded corners and a more polished dark UI design
-- install the release package from the project root
 
 ## usage
 
@@ -62,4 +55,3 @@ sudo ./uninstall_hx32_download_manager.sh
 - linux only
 - works with `python3`
 - files are saved under `~/Downloads` by default
-- this repository includes the 2.0.0 alpha Debian package
