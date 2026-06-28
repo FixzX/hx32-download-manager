@@ -1,4 +1,4 @@
-/* Last updated: 2026-06-28 — v2.0.0-alpha */
+/* Last updated: 2026-06-28 — v3.0.0 */
 window, headerbar, button, entry, progressbar, label, listbox, listboxrow, box, scrolledwindow {
     color: #d9ccff;
     border-radius: 28px;
@@ -318,4 +318,27 @@ entry {
 .theme-neon .details-text,
 .theme-neon .status-label {
     color: #7ef3d9;
+}
+
+/* Filter tab buttons inside downloads */
+.tab-button {
+    background-color: rgba(100, 60, 255, 0.08);
+    color: #e8dcff;
+    border-radius: 18px;
+    padding: 8px 14px;
+    min-width: 90px;
+}
+.tab-button:checked,
+.tab-button:active {
+    background-color: rgba(130, 90, 255, 0.20);
+    color: #fff;
+    box-shadow: 0 8px 26px rgba(86, 60, 180, 0.18);
+}
+
+/* Slightly richer purple accents */
+.primary-button {
+    background-color: #6c4bff;
+}
+.primary-button:hover {
+    background-color: #7e63ff;
 }

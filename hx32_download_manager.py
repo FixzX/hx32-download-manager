@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Last updated: 2026-06-28 — v2.0.0-alpha
+# Last updated: 2026-06-28 — v3.0.0
 
 import gi
 gi.require_version('Gtk', '4.0')
@@ -105,11 +105,27 @@ class HX32DownloadManager(Gtk.Application):
 
         page_downloads.append(top_panel)
 
+        # filter bar for downloads list
+        page_downloads.append(filter_bar)
+
+        # Single listbox with inline filter buttons (All / Active / Completed)
         self.list_box = Gtk.ListBox()
         self.list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
         self.list_box.add_css_class('download-list')
         self.list_box.set_vexpand(True)
         self.list_box.connect('row-selected', self.on_row_selected)
+
+        # Filter toolbar
+        filter_bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        filter_bar.set_halign(Gtk.Align.START)
+        self.filter_all = Gtk.ToggleButton.new_with_label('All')
+        self.filter_active = Gtk.ToggleButton.new_with_label('Active')
+        self.filter_completed = Gtk.ToggleButton.new_with_label('Completed')
+        self.filter_all.set_active(True)
+        for btn in (self.filter_all, self.filter_active, self.filter_completed):
+            btn.add_css_class('tab-button')
+            btn.connect('toggled', self.on_filter_toggled)
+            filter_bar.append(btn)
 
         scrolled = Gtk.ScrolledWindow()
         scrolled.set_child(self.list_box)
@@ -239,6 +255,8 @@ class HX32DownloadManager(Gtk.Application):
                     task.completed = True
                     task.action_button.set_label('Terminé')
                     task.action_button.set_sensitive(False)
+                    task.completed = True
+                    self.refresh_list_visibility()
                     return False
                 return False
         return False
@@ -337,6 +355,35 @@ class HX32DownloadManager(Gtk.Application):
         if not candidate or '.' not in candidate:
             return f'fichier-{task_id}.bin'
         return candidate
+
+    def on_filter_toggled(self, button):
+        # Ensure only one filter is active at a time
+        if button is self.filter_all and button.get_active():
+            self.filter_active.set_active(False)
+            self.filter_completed.set_active(False)
+        elif button is self.filter_active and button.get_active():
+            self.filter_all.set_active(False)
+            self.filter_completed.set_active(False)
+        elif button is self.filter_completed and button.get_active():
+            self.filter_all.set_active(False)
+            self.filter_active.set_active(False)
+        # refresh visibility
+        self.refresh_list_visibility()
+
+    def refresh_list_visibility(self):
+        show_all = self.filter_all.get_active()
+        show_active = self.filter_active.get_active()
+        show_completed = self.filter_completed.get_active()
+        for task in self.tasks:
+            try:
+                if show_all:
+                    task.row.set_visible(True)
+                elif show_active:
+                    task.row.set_visible(not task.completed and not task.canceled)
+                elif show_completed:
+                    task.row.set_visible(task.completed)
+            except Exception:
+                pass
 
     def build_theme_page(self):
         page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
