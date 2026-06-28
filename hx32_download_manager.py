@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Last updated: 2026-06-28 — v2.0.0-alpha
 
 import gi
 gi.require_version('Gtk', '4.0')

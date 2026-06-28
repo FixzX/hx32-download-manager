@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+# postrm script for hx32-download-manager
+case "$1" in
+  remove)
+    # nothing extra on remove
+    ;;
+  purge)
+    # remove installed files and data on purge
+    [ -f "/usr/local/bin/hx32-download-manager" ] && rm -f "/usr/local/bin/hx32-download-manager"
+    [ -f "/usr/local/bin/hx32-download-manager-uninstall" ] && rm -f "/usr/local/bin/hx32-download-manager-uninstall"
+    [ -f "/usr/share/applications/hx32-download-manager.desktop" ] && rm -f "/usr/share/applications/hx32-download-manager.desktop"
+    [ -d "/usr/share/hx32-download-manager" ] && rm -rf "/usr/share/hx32-download-manager"
+    ;;
+  *)
+    ;;
+esac
+
+exit 0

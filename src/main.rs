@@ -1,3 +1,4 @@
+// Last updated: 2026-06-28 — v2.0.0-alpha
 use gtk4::prelude::*;
 use gtk4::{Application, ApplicationWindow, Box as GtkBox, Button, Entry, HeaderBar, Label, ListBox, ListBoxRow, Orientation, ProgressBar, ScrolledWindow, SelectionMode, StyleContext};
 use gtk4::gdk;

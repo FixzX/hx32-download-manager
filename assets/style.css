@@ -1,26 +1,27 @@
+/* Last updated: 2026-06-28 — v2.0.0-alpha */
 window, headerbar, button, entry, progressbar, label, listbox, listboxrow, box, scrolledwindow {
     color: #d9ccff;
+    border-radius: 28px;
 }
 
 window {
     background: #05040d;
+    border-radius: 28px;
 }
 
-headerbar {
-    background-color: transparent;
-    border: none;
-}
-
+headerbar,
 .headerbar {
     background-color: transparent;
+    border: none;
 }
 
 .top-toolbar {
     background: linear-gradient(180deg, rgba(34, 16, 63, 0.92), rgba(17, 10, 33, 0.95));
     border: 1px solid rgba(120, 96, 255, 0.22);
-    border-radius: 28px;
-    padding: 24px;
-    box-shadow: 0 24px 80px rgba(16, 8, 39, 0.30);
+    border-radius: 32px;
+    padding: 26px;
+    box-shadow: 0 28px 90px rgba(16, 8, 39, 0.35);
+    backdrop-filter: blur(14px);
 }
 
 .title-label {
@@ -37,24 +38,27 @@ headerbar {
 
 .entry-field {
     background-color: rgba(22, 9, 44, 0.94);
-    border-radius: 20px;
+    border-radius: 26px;
     border: 1px solid rgba(128, 93, 255, 0.58);
-    padding: 16px 18px;
+    padding: 18px 20px;
     color: #e8dcff;
+    transition: border-color 140ms ease, background-color 140ms ease, transform 140ms ease;
 }
 
 .entry-field:selected,
 .entry-field:focus {
-    border-color: #a286ff;
-    background-color: rgba(42, 22, 82, 0.98);
+    border-color: #b49bff;
+    background-color: rgba(54, 30, 100, 0.96);
+    transform: translateY(-1px);
 }
 
 .primary-button {
     background-color: #7a68ff;
     color: #f4e9ff;
-    border-radius: 22px;
-    padding: 16px 24px;
+    border-radius: 999px;
+    padding: 16px 26px;
     min-width: 180px;
+    box-shadow: 0 16px 40px rgba(122, 104, 255, 0.24);
 }
 
 .primary-button:hover {
@@ -73,11 +77,12 @@ headerbar {
 }
 
 .download-list {
-    background-color: rgba(14, 15, 25, 0.95);
+    background-color: rgba(14, 15, 25, 0.94);
     border: 1px solid rgba(96, 67, 255, 0.16);
-    border-radius: 30px;
-    padding: 20px;
+    border-radius: 34px;
+    padding: 24px;
     min-width: 520px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
 }
 
 .download-row {
@@ -85,13 +90,14 @@ headerbar {
     border: 1px solid rgba(113, 74, 255, 0.18);
     border-radius: 26px;
     padding: 18px;
-    margin-bottom: 14px;
-    transition: transform 150ms ease, background-color 150ms ease;
+    margin-bottom: 18px;
+    transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
 .download-row:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     background: linear-gradient(180deg, rgba(41, 21, 93, 0.96), rgba(20, 11, 43, 0.98));
+    box-shadow: 0 22px 54px rgba(30, 11, 95, 0.16);
 }
 
 .download-row:selected {
@@ -127,10 +133,10 @@ headerbar {
 .details-card {
     background: rgba(14, 9, 40, 0.96);
     border: 1px solid rgba(140, 107, 255, 0.24);
-    border-radius: 32px;
-    padding: 28px;
+    border-radius: 36px;
+    padding: 30px;
     min-width: 360px;
-    box-shadow: inset 0 0 0 1px rgba(120, 85, 255, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(120, 85, 255, 0.12), 0 18px 45px rgba(24, 13, 75, 0.14);
 }
 
 .details-title {
@@ -147,9 +153,10 @@ headerbar {
 
 .details-progress {
     min-height: 14px;
-    border-radius: 12px;
+    border-radius: 16px;
     background-color: rgba(95, 63, 255, 0.16);
     margin-top: 20px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
 }
 
 button,
@@ -159,18 +166,22 @@ entry {
 
 .main-tabs notebook tab {
     background-color: rgba(120, 80, 255, 0.12);
-    border-radius: 16px 16px 0 0;
-    padding: 10px 16px;
+    border-radius: 18px 18px 0 0;
+    padding: 12px 18px;
     color: #dbc6ff;
+    min-width: 120px;
+    margin: 0 4px;
 }
 
-.main-tabs notebook tab:hover {
+..main-tabs notebook tab:hover {
     background-color: rgba(130, 95, 255, 0.16);
+    transform: translateY(-1px);
 }
 
 .main-tabs notebook tab:checked {
     background-color: rgba(140, 100, 255, 0.28);
     color: #f0e8ff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
 }
 
 .theme-violet window {

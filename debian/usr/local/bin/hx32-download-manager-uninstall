@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Installed helper that runs the packaged uninstaller actions
+INSTALL_PATH="/usr/local/bin/hx32-download-manager"
+DESKTOP_PATH="/usr/share/applications/hx32-download-manager.desktop"
+DATA_DIR="/usr/share/hx32-download-manager"
+
+if [ -f "$INSTALL_PATH" ]; then
+    rm -f "$INSTALL_PATH"
+fi
+
+if [ -f "$DESKTOP_PATH" ]; then
+    rm -f "$DESKTOP_PATH"
+fi
+
+if [ -d "$DATA_DIR" ]; then
+    rm -rf "$DATA_DIR"
+fi
+
+echo "hx32-download-manager removed from system."
