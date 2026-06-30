@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Last updated: 2026-06-30 — v4.0.0
+# Last updated: 2026-06-30 — v5.0.0
 set -euo pipefail
 
 # Installed helper that runs the packaged uninstaller actions

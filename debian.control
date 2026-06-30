@@ -1,5 +1,5 @@
 Package: hx32-download-manager
-Version: 4.0.0
+Version: 5.0.0
 Section: utils
 Priority: optional
 Architecture: amd64
