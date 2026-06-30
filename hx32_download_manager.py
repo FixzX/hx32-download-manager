@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Last updated: 2026-06-30 — v4.0.0
+# Last updated: 2026-06-30 — v5.0.0
 
 import gi
 gi.require_version('Gtk', '4.0')
@@ -152,12 +152,14 @@ class HX32DownloadManager(Gtk.Application):
 
         page_downloads.append(dashboard)
 
+        page_prelink = self.build_prelink_page()
         page_theme = self.build_theme_page()
         page_settings = self.build_settings_page()
 
         notebook = Gtk.Notebook()
         notebook.add_css_class('main-tabs')
         notebook.append_page(page_downloads, Gtk.Label(label='Downloads'))
+        notebook.append_page(page_prelink, Gtk.Label(label='Pre-download'))
         notebook.append_page(page_theme, Gtk.Label(label='Themes'))
         notebook.append_page(page_settings, Gtk.Label(label='Settings'))
 
@@ -254,6 +256,68 @@ class HX32DownloadManager(Gtk.Application):
         self.assistant_status.set_text('Looking for a good download link...')
         thread = threading.Thread(target=self.find_direct_link, args=(url, button), daemon=True)
         thread.start()
+
+    def on_find_prelink(self, button):
+        url = self.prelink_entry.get_text().strip()
+        if not url:
+            self.prelink_result.set_text('Enter a URL to inspect.')
+            return
+
+        button.set_sensitive(False)
+        self.prelink_result.set_text('Analyzing link...')
+        thread = threading.Thread(target=self.resolve_prelink, args=(url, button), daemon=True)
+        thread.start()
+
+    def resolve_prelink(self, url, button):
+        candidate = self.resolve_download_link(url)
+        if candidate:
+            GLib.idle_add(self.prelink_result.set_text, f'Direct link found: {candidate}')
+            GLib.idle_add(self.copy_button.set_sensitive, True)
+            GLib.idle_add(self.prelink_icon.set_from_icon_name, self.get_icon_for_link(candidate), Gtk.IconSize.BUTTON)
+            GLib.idle_add(self.copy_button.set_tooltip_text, candidate)
+            self.prelink_value = candidate
+        else:
+            GLib.idle_add(self.prelink_result.set_text, 'No direct download link was found.')
+            GLib.idle_add(self.copy_button.set_sensitive, False)
+            self.prelink_value = None
+        GLib.idle_add(button.set_sensitive, True)
+
+    def on_copy_prelink(self, button):
+        if getattr(self, 'prelink_value', None):
+            display = Gdk.Display.get_default()
+            if display:
+                clipboard = display.get_clipboard()
+                text_value = GLib.Variant.new_string(self.prelink_value)
+                content = Gdk.ContentProvider.new_for_value(text_value)
+                clipboard.set_content(content)
+                self.prelink_result.set_text('Pre-link copied. Paste it into the download field.')
+                self.url_entry.set_text(self.prelink_value)
+            else:
+                self.prelink_result.set_text('Clipboard is unavailable.')
+
+    def get_icon_for_link(self, url):
+        link = url.split('?')[0].lower()
+        icons = {
+            '.exe': 'application-x-executable-symbolic',
+            '.zip': 'package-x-generic-symbolic',
+            '.tar.gz': 'package-x-generic-symbolic',
+            '.gz': 'package-x-generic-symbolic',
+            '.deb': 'package-x-generic-symbolic',
+            '.pdf': 'x-office-document-symbolic',
+            '.mp4': 'video-x-generic-symbolic',
+            '.mp3': 'audio-x-generic-symbolic',
+            '.jpg': 'image-jpeg-symbolic',
+            '.jpeg': 'image-jpeg-symbolic',
+            '.png': 'image-png-symbolic',
+            '.svg': 'image-svg+xml-symbolic',
+            '.txt': 'text-x-generic-symbolic',
+            '.docx': 'x-office-document-symbolic',
+            '.xlsx': 'x-office-spreadsheet-symbolic',
+        }
+        for ext, icon in icons.items():
+            if link.endswith(ext):
+                return icon
+        return 'text-x-generic-symbolic'
 
     def find_direct_link(self, url, button):
         candidate = self.resolve_download_link(url)
@@ -452,6 +516,56 @@ class HX32DownloadManager(Gtk.Application):
                     task.row.set_visible(task.completed)
             except Exception:
                 pass
+
+    def build_prelink_page(self):
+        page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
+        page.set_margin_top(12)
+        page.set_margin_end(18)
+        page.set_margin_start(18)
+        page.set_margin_bottom(18)
+
+        title = Gtk.Label(label='pre-download links')
+        title.add_css_class('details-title')
+        title.set_xalign(0)
+
+        subtitle = Gtk.Label(label='Inspect page URLs, copy the direct download link, then paste it into the downloader.')
+        subtitle.add_css_class('details-text')
+        subtitle.set_wrap(True)
+        subtitle.set_xalign(0)
+
+        self.prelink_entry = Gtk.Entry()
+        self.prelink_entry.set_placeholder_text('enter a page or file URL for preview')
+        self.prelink_entry.add_css_class('entry-field')
+        self.prelink_entry.set_hexpand(True)
+
+        find_button = Gtk.Button(label='Find pre-link')
+        find_button.add_css_class('primary-button')
+        find_button.connect('clicked', self.on_find_prelink)
+
+        self.prelink_result = Gtk.Label(label='No link selected yet.')
+        self.prelink_result.add_css_class('details-text')
+        self.prelink_result.set_wrap(True)
+        self.prelink_result.set_xalign(0)
+
+        self.copy_button = Gtk.Button(label='Copy pre-link')
+        self.copy_button.add_css_class('secondary-button')
+        self.copy_button.set_sensitive(False)
+        self.copy_button.connect('clicked', self.on_copy_prelink)
+
+        self.prelink_icon = Gtk.Image.new_from_icon_name('text-x-generic-symbolic', Gtk.IconSize.BUTTON)
+        self.prelink_icon.set_pixel_size(48)
+
+        button_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        button_row.append(find_button)
+        button_row.append(self.copy_button)
+
+        page.append(title)
+        page.append(subtitle)
+        page.append(self.prelink_entry)
+        page.append(button_row)
+        page.append(self.prelink_icon)
+        page.append(self.prelink_result)
+        return page
 
     def build_theme_page(self):
         page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
