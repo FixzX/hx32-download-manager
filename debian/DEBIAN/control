@@ -1,9 +1,9 @@
 Package: hx32-download-manager
-Version: 3.0.0
+Version: 4.0.0
 Section: utils
 Priority: optional
 Architecture: amd64
 Depends: python3, python3-gi, python3-gi-cairo, gir1.2-gtk-4.0
 Maintainer: HX32 Team <noreply@example.com>
-Description: Linux-only GTK4 download manager with dark themes and rounded UI
+Description: GTK4 download manager with dark themes and improved assistant guidance
  HX32 download manager lets you download files, track progress, and cancel tasks.

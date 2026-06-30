@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-# Last updated: 2026-06-28 — v3.0.0
+# Last updated: 2026-06-30 — v4.0.0
 
 import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk, Gio, GLib, Gdk
 from pathlib import Path
 import os
+import re
 import threading
+import urllib.parse
 import urllib.request
 import urllib.error
 
@@ -45,7 +47,7 @@ class HX32DownloadManager(Gtk.Application):
         self.window.add_css_class(self.theme_name)
 
         style_provider = Gtk.CssProvider()
-        style_provider.load_from_path(os.path.join(os.path.dirname(__file__), 'assets', 'style.css'))
+        style_provider.load_from_path(self.find_style_path())
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), style_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         header = Gtk.HeaderBar.new()
@@ -92,7 +94,12 @@ class HX32DownloadManager(Gtk.Application):
         add_button.add_css_class('primary-button')
         add_button.connect('clicked', self.on_add_download)
 
+        assist_button = Gtk.Button(label='Find link')
+        assist_button.add_css_class('secondary-button')
+        assist_button.connect('clicked', self.on_assist_link)
+
         action_row.append(self.url_entry)
+        action_row.append(assist_button)
         action_row.append(add_button)
 
         top_panel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
@@ -105,8 +112,10 @@ class HX32DownloadManager(Gtk.Application):
 
         page_downloads.append(top_panel)
 
-        # filter bar for downloads list
-        page_downloads.append(filter_bar)
+        self.assistant_status = Gtk.Label(label='Link assistant ready.')
+        self.assistant_status.add_css_class('details-text')
+        self.assistant_status.set_xalign(0)
+        top_panel.append(self.assistant_status)
 
         # Single listbox with inline filter buttons (All / Active / Completed)
         self.list_box = Gtk.ListBox()
@@ -126,6 +135,8 @@ class HX32DownloadManager(Gtk.Application):
             btn.add_css_class('tab-button')
             btn.connect('toggled', self.on_filter_toggled)
             filter_bar.append(btn)
+
+        page_downloads.append(filter_bar)
 
         scrolled = Gtk.ScrolledWindow()
         scrolled.set_child(self.list_box)
@@ -232,6 +243,63 @@ class HX32DownloadManager(Gtk.Application):
 
         action_button.connect('clicked', self.on_cancel_download, task_id)
         self.start_download(task)
+
+    def on_assist_link(self, button):
+        url = self.url_entry.get_text().strip()
+        if not url:
+            self.assistant_status.set_text('Enter a URL to search for a download link.')
+            return
+
+        button.set_sensitive(False)
+        self.assistant_status.set_text('Looking for a good download link...')
+        thread = threading.Thread(target=self.find_direct_link, args=(url, button), daemon=True)
+        thread.start()
+
+    def find_direct_link(self, url, button):
+        candidate = self.resolve_download_link(url)
+        if candidate:
+            GLib.idle_add(self.url_entry.set_text, candidate)
+            GLib.idle_add(self.assistant_status.set_text, 'Direct download link suggested.')
+        else:
+            GLib.idle_add(self.assistant_status.set_text, 'No direct download link was found.')
+        GLib.idle_add(button.set_sensitive, True)
+
+    def resolve_download_link(self, url):
+        if self.is_probably_direct_file(url):
+            return url
+        try:
+            request = urllib.request.Request(url, headers={'User-Agent': 'HX32 Download Manager/4.0'})
+            with urllib.request.urlopen(request, timeout=20) as response:
+                if response.getheader('Content-Disposition'):
+                    return url
+                content_type = response.getheader('Content-Type', '').lower()
+                if 'text/html' in content_type:
+                    html = response.read(65536).decode('utf-8', errors='ignore')
+                    direct_link = self.extract_link_from_html(html, url)
+                    if direct_link:
+                        return direct_link
+                if 'application' in content_type or 'octet-stream' in content_type:
+                    return url
+        except Exception:
+            pass
+        return None
+
+    def extract_link_from_html(self, html, base_url):
+        links = re.findall(r'href=[\"\']([^\"\']+)[\"\']', html, re.I)
+        for link in links:
+            if link.startswith('//'):
+                link = 'https:' + link
+            if self.is_probably_direct_file(link):
+                if link.startswith('http'):
+                    return link
+                if link.startswith('/'):
+                    return urllib.parse.urljoin(base_url, link)
+        return None
+
+    def is_probably_direct_file(self, url):
+        target = url.split('?')[0].lower()
+        extensions = ('.exe', '.zip', '.tar.gz', '.gz', '.deb', '.msi', '.iso', '.pdf', '.mp4', '.mp3', '.jpg', '.jpeg', '.png', '.svg', '.txt', '.docx', '.xlsx')
+        return any(target.endswith(ext) for ext in extensions)
 
     def on_cancel_download(self, button, task_id):
         for task in self.tasks:
@@ -484,7 +552,19 @@ class HX32DownloadManager(Gtk.Application):
             self.download_dir = expanded
             self.details_dir.set_text(f'Path: {self.download_dir}')
 
+    def find_style_path(self):
+        local_path = os.path.join(os.path.dirname(__file__), 'assets', 'style.css')
+        if os.path.exists(local_path):
+            return local_path
+        packaged_path = os.path.join(os.path.dirname(__file__), '..', 'share', 'hx32-download-manager', 'style.css')
+        if os.path.exists(packaged_path):
+            return packaged_path
+        raise FileNotFoundError('style.css not found')
 
-if __name__ == '__main__':
+
+def main():
     app = HX32DownloadManager()
     app.run(None)
+
+if __name__ == '__main__':
+    main()

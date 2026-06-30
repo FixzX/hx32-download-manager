@@ -1,8 +1,8 @@
 [Desktop Entry]
-# Last updated: 2026-06-28 — v2.0.0-alpha
+# Last updated: 2026-06-30 — v4.0.0
 Type=Application
 Name=HX32 Download Manager
-Comment=Download manager for Linux with GTK4 interface
+Comment=Download manager with GTK4 interface and link assistant
 Exec=/usr/local/bin/hx32-download-manager
 Icon=utilities-terminal
 Terminal=false

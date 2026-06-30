@@ -1,12 +1,12 @@
 # hx32 download manager
-# Last updated: 2026-06-28 — v3.0.0
+# Last updated: 2026-06-30 — v4.0.0
 
 
 hx32 download manager is a GTK4 app written in Python. Builds are provided for Linux (Debian package) and a standalone Windows executable is available from the GitHub release page.
 
 It lets you add a download URL, track progress, cancel downloads, and save files to your downloads folder.
 
-the ui includes tabs for downloads, themes, and settings so users can customize the app.
+The UI includes tabs for downloads, themes, settings, and a link assistant to help find direct download URLs.
 
 ## install
 
@@ -26,7 +26,7 @@ python3 hx32_download_manager.py
 3. or install the Debian package once built or downloaded:
 
 ```bash
-sudo dpkg -i hx32-download-manager_3.0.0_amd64.deb
+sudo dpkg -i hx32-download-manager_4.0.0_amd64.deb
 ```
 
 4. if an older version is installed, run the uninstaller before updating:
@@ -37,9 +37,9 @@ sudo ./uninstall_hx32_download_manager.sh
 
 ## release
 
-- version: 3.0.0
-- packages: `hx32-download-manager_3.0.0_amd64.deb` (Linux) and `hx32-download-manager.exe` (Windows)
-- notes: UI improvements, tabs, improved theme, and release artifacts for Linux and Windows
+- version: 4.0.0
+- packages: `hx32-download-manager_4.0.0_amd64.deb` (Linux) and `hx32-download-manager.exe` (Windows)
+- notes: link assistant, UI improvements, tabs, improved theme, and release artifacts for Linux and Windows
 - install the Debian package from the project root or download the Windows executable from the GitHub release
 
 ## usage
@@ -61,7 +61,7 @@ sudo ./uninstall_hx32_download_manager.sh
 
 ## note
 
-- linux only
+- Linux package available as `hx32-download-manager_4.0.0_amd64.deb`
+- a standalone Windows executable is available from the GitHub release page
 - works with `python3`
 - files are saved under `~/Downloads` by default
-- this repository includes the 2.0.0 alpha Debian package

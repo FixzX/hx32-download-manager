@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 authors = ["HX32 Team"]
 description = "Modern GTK4 download manager for Linux"
-# Last updated: 2026-06-28 — v2.0.0-alpha
+# Last updated: 2026-06-30 — v4.0.0
 license = "MIT"
 repository = "https://github.com/FixzX/hx32-download-manager"
 
